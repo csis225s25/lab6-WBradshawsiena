@@ -1,100 +1,91 @@
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
 
 /**
- * Lab 5 demo of mouse events.
- * 
- * @author Jim Teresco
- * @author Ira Goldstein
- * @version Spring 2025
- */
-public class MousePressCounter implements Runnable, MouseListener, MouseMotionListener, MouseWheelListener {
-	String toDisplay = "Mouse Around and See!";
-    int counter=0;
-	/**
-	 * The run method to set up the graphical user interface
-	 */
+   Test of the Java swing functionality
+
+   @author Tim Bush, Gavin Clark
+   @version Spring 2025
+*/
+class mousePanel extends JPanel {
+	
 	@Override
-	public void run() {
+    public void paintComponent(Graphics g) {
 
-		JFrame.setDefaultLookAndFeelDecorated(true);
-		JFrame frame = new JFrame("MouseDemo");
-		frame.setPreferredSize(new Dimension(500, 500));
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // first, we should call the paintComponent method we are
+        // overriding in JPanel
+        super.paintComponent(g);
+		MousePressCounter a=new MousePressCounter();
+		g.drawString("Mouse press count: " + a.getClicks(), (getWidth() / 2) - g.getFontMetrics().stringWidth("Mouse press count: ") / 2, (getHeight() / 2) - (g.getFontMetrics().getAscent()) / 2);
+		repaint();
+    }
+}
 
-		// construct an anonymous class that extends JPanel,
-		// for which we override the paintComponent method
-		JPanel panel = new JPanel() {
-			@Override
-			public void paintComponent(Graphics g) {
+public class MousePressCounter implements Runnable, /*ActionListener,*/ MouseListener {
 
-				super.paintComponent(g);
+    private JPanel panel;
+	private JButton resetButton;
+	private JLabel clickCount;
+	private int clicks;
 
-				FontMetrics fm = g.getFontMetrics();
-                
-				int stringWidth = fm.stringWidth(toDisplay);
-				int stringAscent = fm.getAscent();
+    /**
+       The run method to set up the graphical user interface
 
-				int xStart = getWidth() / 2 - stringWidth / 2;
-				int yStart = getHeight() / 2 + stringAscent / 2;
-                
-				g.drawString(toDisplay, xStart, yStart);
-			}
-		};
-		frame.add(panel);
-		panel.addMouseListener(this);
-		panel.addMouseMotionListener(this);
-		panel.addMouseWheelListener(this);
+    */
+    @Override
+    public void run() {
 
-		// display the window we've created
-		frame.pack();
-		frame.setVisible(true);
-	}
+        // the usual JFrame setup steps
+        JFrame.setDefaultLookAndFeelDecorated(true);
+        JFrame frame = new JFrame("HelloGraphics");
+        frame.setPreferredSize(new Dimension(500, 500));
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		clicks = 0;
+		mousePanel newPanel = new mousePanel();
+        // construct JPanel with a custom paintComponent method
+		resetButton = new JButton("Reset");
+		//resetButton.addActionListener(this);
+		
+		newPanel.addMouseListener(this);
+		newPanel.add(resetButton);
+		frame.add(newPanel);
 
+        // display the window we've created
+        frame.pack();
+        frame.setVisible(true);
+    }
+    
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		System.out.println("mouseClicked: " + e);
-        counter+=1;
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		System.out.println("mousePressed: " + e);
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		System.out.println("mouseReleased: " + e);
+		clicks++;
+		System.out.println(clicks);
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		System.out.println("mouseEntered: " + e);
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		System.out.println("mouseExited: " + e);
 	}
 
 	@Override
-	public void mouseDragged(MouseEvent e) {
-		System.out.println("mouseDragged: " + e);
+	public void mouseReleased(MouseEvent e) {
 	}
 
 	@Override
-	public void mouseMoved(MouseEvent e) {
-		System.out.println("mouseMoved: " + e);
+	public void mousePressed(MouseEvent e) {
 	}
 
-	@Override
-	public void mouseWheelMoved(MouseWheelEvent e) {
-		System.out.println("mouseWheelMoved: " + e);
-	}
 
-	public static void main(String args[]) {
-		javax.swing.SwingUtilities.invokeLater(new MouseDemo());
+
+	public int getClicks(){
+		return clicks;
 	}
+    public static void main(String args[]) {
+
+		javax.swing.SwingUtilities.invokeLater(new MousePressCounter());
+		}
 }
+   
