@@ -23,7 +23,7 @@ class GraphicsPanel extends JPanel {
         // the Graphics object passed to this method has many methods
         // we can use to draw in the area of the panel, one of which
         // allows us to draw a String at a given x,y position
-        g.drawString("Hello, Java Graphics World!", 0, 20);
+        g.drawString("Hello, Java Graphics World!", (getWidth() / 2) - g.getFontMetrics().stringWidth("Hello, Java Graphics World!") / 2, (getHeight() / 2) - (g.getFontMetrics().getAscent()) / 2);
     }
 }
 
@@ -32,6 +32,9 @@ public class HelloGraphics implements Runnable {
     /**
      * The run method to set up the graphical user interface
      */
+    private int width;
+    private int height;
+
     @Override
     public void run() {
 
@@ -43,6 +46,8 @@ public class HelloGraphics implements Runnable {
 
         // construct JPanel with a custom paintComponent method
         JPanel panel = new GraphicsPanel();
+        width = panel.getWidth();
+        height = panel.getHeight();
         frame.add(panel);
 
         // display the window we've created
@@ -50,6 +55,13 @@ public class HelloGraphics implements Runnable {
         frame.setVisible(true);
     }
 
+    public int getWidth(){
+        return width;
+    }
+
+    public int getHeight(){
+        return height;
+    }
     public static void main(String args[]) {
         javax.swing.SwingUtilities.invokeLater(new HelloGraphics());
     }
