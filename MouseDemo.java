@@ -11,6 +11,7 @@ import javax.swing.event.*;
  * @version Spring 2025
  */
 public class MouseDemo implements Runnable, MouseListener, MouseMotionListener, MouseWheelListener {
+	String toDisplay = "Mouse Around and See!";
 
 	/**
 	 * The run method to set up the graphical user interface
@@ -33,7 +34,6 @@ public class MouseDemo implements Runnable, MouseListener, MouseMotionListener, 
 
 				FontMetrics fm = g.getFontMetrics();
 
-				String toDisplay = "Mouse Around and See!";
 				int stringWidth = fm.stringWidth(toDisplay);
 				int stringAscent = fm.getAscent();
 
