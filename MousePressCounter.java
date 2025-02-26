@@ -5,7 +5,7 @@ import java.awt.event.*;
 /**
    Test of the Java swing functionality
 
-   @author Tim Bush, Gavin Clark
+   @author Wyatt Bradshaw, Gavin Clark
    @version Spring 2025
 */
 class mousePanel extends JPanel {
@@ -16,7 +16,7 @@ class mousePanel extends JPanel {
         // first, we should call the paintComponent method we are
         // overriding in JPanel
         super.paintComponent(g);
-		MousePressCounter a=new MousePressCounter();
+		MousePressCounter a = new MousePressCounter();
 		g.drawString("Mouse press count: " + a.getClicks(), (getWidth() / 2) - g.getFontMetrics().stringWidth("Mouse press count: ") / 2, (getHeight() / 2) - (g.getFontMetrics().getAscent()) / 2);
 		repaint();
     }
@@ -24,9 +24,7 @@ class mousePanel extends JPanel {
 
 public class MousePressCounter implements Runnable, /*ActionListener,*/ MouseListener {
 
-    private JPanel panel;
 	private JButton resetButton;
-	private JLabel clickCount;
 	private int clicks;
 
     /**
