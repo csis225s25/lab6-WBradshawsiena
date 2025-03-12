@@ -43,18 +43,18 @@ public class MousePressCounter implements Runnable, ActionListener, MouseListene
 
         // the usual JFrame setup steps
         JFrame.setDefaultLookAndFeelDecorated(true);
-        JFrame frame = new JFrame("HelloGraphics");
+        JFrame frame = new JFrame("MousePressCounter");
         frame.setPreferredSize(new Dimension(500, 500));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		clicks = 0;
 		panel = new MousePanel(this);
         // construct JPanel with a custom paintComponent method
 		resetButton = new JButton("Reset");
-		//resetButton.addActionListener(this);
-		
 		resetButton.addActionListener(this);
-		frame.add(resetButton);
-		frame.add(panel);
+
+		frame.setLayout(new BorderLayout());
+		frame.add(resetButton, BorderLayout.SOUTH);
+		frame.add(panel, BorderLayout.CENTER);
 
         // display the window we've created
         frame.pack();
@@ -64,7 +64,6 @@ public class MousePressCounter implements Runnable, ActionListener, MouseListene
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		clicks++;
-		System.out.println(clicks);
 		panel.repaint();
 	}
 
