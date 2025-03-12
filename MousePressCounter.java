@@ -8,24 +8,31 @@ import java.awt.event.*;
    @author Wyatt Bradshaw, Gavin Clark
    @version Spring 2025
 */
-class mousePanel extends JPanel {
+class MousePanel extends JPanel {
 	
+	private MousePressCounter count;
+
+	public MousePanel(MousePressCounter count){
+		this.count = count;
+		addMouseListener(count);
+		setLayout(new BorderLayout());
+	}
+
 	@Override
     public void paintComponent(Graphics g) {
 
         // first, we should call the paintComponent method we are
         // overriding in JPanel
         super.paintComponent(g);
-		MousePressCounter a = new MousePressCounter();
-		g.drawString("Mouse press count: " + a.getClicks(), (getWidth() / 2) - g.getFontMetrics().stringWidth("Mouse press count: ") / 2, (getHeight() / 2) - (g.getFontMetrics().getAscent()) / 2);
-		repaint();
+		g.drawString("Mouse press count: " + count.getClicks(), (getWidth() / 2) - g.getFontMetrics().stringWidth("Mouse press count: ") / 2, (getHeight() / 2) - (g.getFontMetrics().getAscent()) / 2);
     }
 }
 
-public class MousePressCounter implements Runnable, /*ActionListener,*/ MouseListener {
+public class MousePressCounter implements Runnable, ActionListener, MouseListener {
 
 	private JButton resetButton;
 	private int clicks;
+	private MousePanel panel;
 
     /**
        The run method to set up the graphical user interface
@@ -40,14 +47,14 @@ public class MousePressCounter implements Runnable, /*ActionListener,*/ MouseLis
         frame.setPreferredSize(new Dimension(500, 500));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		clicks = 0;
-		mousePanel newPanel = new mousePanel();
+		panel = new MousePanel(this);
         // construct JPanel with a custom paintComponent method
 		resetButton = new JButton("Reset");
 		//resetButton.addActionListener(this);
 		
-		newPanel.addMouseListener(this);
-		newPanel.add(resetButton);
-		frame.add(newPanel);
+		resetButton.addActionListener(this);
+		frame.add(resetButton);
+		frame.add(panel);
 
         // display the window we've created
         frame.pack();
@@ -58,6 +65,7 @@ public class MousePressCounter implements Runnable, /*ActionListener,*/ MouseLis
 	public void mouseClicked(MouseEvent e) {
 		clicks++;
 		System.out.println(clicks);
+		panel.repaint();
 	}
 
 	@Override
@@ -76,6 +84,11 @@ public class MousePressCounter implements Runnable, /*ActionListener,*/ MouseLis
 	public void mousePressed(MouseEvent e) {
 	}
 
+	@Override
+	public void actionPerformed(ActionEvent e){
+		clicks = 0;
+		panel.repaint();
+	}
 
 
 	public int getClicks(){
